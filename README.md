@@ -3,7 +3,7 @@
 ## Example
 ![image](https://i.imgur.com/G4MbjUV.png)
 ## Where can i download the compiled version?
-Head over to [releases](https://github.com/Riotphobia/LobbyReveal/releases/)
+Head over to [releases](https://github.com/Xh4H/LobbyReveal/releases/)
 ## How can i compile it for myself?
 * .NET Framework 4.8 which only works for windows
 * .NET 6.0 which works for windows, macos and linux!
