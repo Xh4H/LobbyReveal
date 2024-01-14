@@ -1,7 +1,7 @@
 # LobbyReveal
 #### LobbyReveal is a small app that lets you see who is in your lobby.
 ## Example
-![image]([https://cdn.discordapp.com/attachments/881887652155117621/1073273708132708403/image.png](https://i.imgur.com/G4MbjUV.png))
+![image](https://i.imgur.com/G4MbjUV.png)
 ## Where can i download the compiled version?
 Head over to [releases](https://github.com/Riotphobia/LobbyReveal/releases/)
 ## How can i compile it for myself?
