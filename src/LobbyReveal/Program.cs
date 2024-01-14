@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -93,7 +93,7 @@ namespace LobbyReveal
                     Console.Clear();
                     AnsiConsole.Write(new Markup("[u][yellow]https://www.github.com/Xh4H/LobbyReveal[/][/]")
                         .Centered());
-                    AnsiConsole.Write(new Markup("[u][green][b]v1.0.2 - Xh4H[/][/][/]").Centered());
+                    AnsiConsole.Write(new Markup("[u][green][b]v1.0.3 - Xh4H[/][/][/]").Centered());
                     Console.WriteLine();
                     Console.WriteLine();
                     for (int i = 0; i < _handlers.Count; i++)
