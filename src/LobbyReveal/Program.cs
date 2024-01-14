@@ -22,6 +22,25 @@ namespace LobbyReveal
 
         private static Random random = new Random();
 
+        private static void OpenLinkInDefaultBrowser(LobbyHandler handler) {
+            try {
+                var region = handler.GetRegion();
+
+                var link =
+                    $"https://www.op.gg/multisearch/{region ?? Region.EUW}?summoners=" +
+                    HttpUtility.UrlEncode($"{string.Join(",", handler.GetSummoners())}");
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                    Process.Start("cmd", $"/c start {link}");
+                } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+                    Process.Start("xdg-open", link);
+                } else {
+                    Process.Start("open", link);
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Error opening link: {ex.Message}");
+            }
+        }
+
         public async static Task Main(string[] args)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -59,23 +78,7 @@ namespace LobbyReveal
                     continue;
                 }
 
-                var region = _handlers[i - 1].GetRegion();
-
-                var link =
-                    $"https://www.op.gg/multisearch/{region ?? Region.EUW}?summoners=" +
-                    HttpUtility.UrlEncode($"{string.Join(",", _handlers[i - 1].GetSummoners())}");
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    Process.Start(link);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    Process.Start("xdg-open", link);
-                }
-                else
-                {
-                    Process.Start("open", link);
-                }
+                OpenLinkInDefaultBrowser(_handlers[i - 1]);
                 _update = true;
             }
 
