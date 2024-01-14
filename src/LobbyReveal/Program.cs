@@ -20,13 +20,17 @@ namespace LobbyReveal
         private static List<LobbyHandler> _handlers = new List<LobbyHandler>();
         private static bool _update = true;
 
+        private static Random random = new Random();
+
         public async static Task Main(string[] args)
         {
-            Console.Title = "notepad";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+             
+            Console.Title = new string(Enumerable.Repeat(chars, 15)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
             var watcher = new LeagueClientWatcher();
             watcher.OnLeagueClient += (clientWatcher, client) =>
             {
-                /*Console.WriteLine(client.Pid);*/
                 var handler = new LobbyHandler(new LeagueApi(client.ClientAuthInfo.RiotClientAuthToken,
                     client.ClientAuthInfo.RiotClientPort));
                 _handlers.Add(handler);
@@ -84,30 +88,44 @@ namespace LobbyReveal
                 if (_update)
                 {
                     Console.Clear();
-                    AnsiConsole.Write(new Markup("[u][yellow]https://www.github.com/Riotphobia/LobbyReveal[/][/]")
+                    AnsiConsole.Write(new Markup("[u][yellow]https://www.github.com/Xh4H/LobbyReveal[/][/]")
                         .Centered());
-                    AnsiConsole.Write(new Markup("[u][blue][b]v1.0.1 - 0xInception[/][/][/]").Centered());
+                    AnsiConsole.Write(new Markup("[u][green][b]v1.0.2 - Xh4H[/][/][/]").Centered());
                     Console.WriteLine();
                     Console.WriteLine();
                     for (int i = 0; i < _handlers.Count; i++)
                     {
+                        var lobby_summoners = _handlers[i].GetSummoners();
                         var link =
                             $"https://www.op.gg/multisearch/{_handlers[i].GetRegion() ?? Region.EUW}?summoners=" +
-                            HttpUtility.UrlEncode($"{string.Join(",", _handlers[i].GetSummoners())}");
+                            HttpUtility.UrlEncode($"{string.Join(",", lobby_summoners)}");
 
                         AnsiConsole.Write(
-                            new Panel(new Text($"{string.Join("\n", _handlers[i].GetSummoners())}\n\n{link}")
+                            new Panel(new Text($"{string.Join("\n", lobby_summoners)}\n\n{link}")
                                     .LeftJustified())
                                 .Expand()
                                 .SquareBorder()
                                 .Header($"[red]Client {i + 1}[/]"));
                         Console.WriteLine();
+
+                        var summoners_count = _handlers[i].GetCount();
+                        if (summoners_count > 0) {
+                            if (summoners_count == 5) {
+                                AnsiConsole.Write(new Markup("[u][green][b]Full lobby detected! Press client number to open op.gg in browser.[/][/][/]")
+                                    .LeftJustified());
+                            } else {
+                                AnsiConsole.Write(new Markup("[u][yellow][b]Partial lobby detected! " + summoners_count + "/5 players detected.[/][/][/]")
+                                    .LeftJustified());
+                            }
+                        } else {
+                            AnsiConsole.Write(new Markup("[u][cyan][b]Waiting for a lobby.[/][/][/]")
+                                    .LeftJustified());
+                        }
                     }
 
                     Console.WriteLine();
                     Console.WriteLine();
-                    AnsiConsole.Write(new Markup("[u][cyan][b]Type the client number to open op.gg![/][/][/]")
-                        .LeftJustified());
+                    
                     Console.WriteLine();
                     _update = false;
                 }

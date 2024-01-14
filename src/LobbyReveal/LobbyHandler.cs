@@ -84,6 +84,11 @@ public class LobbyHandler
         return _region;
     }
 
+    public int GetCount()
+    {
+        return _cache.Length;
+    }
+
     private async Task Loop()
     {
         while (true)
@@ -130,8 +135,7 @@ public class LobbyHandler
                 if (participantsJson?.participants is null)
                     continue;
 
-                var names = participantsJson.participants.Select(x => x.name).ToArray();
-
+                var names = participantsJson.participants.Select(user => $"{user.game_name}#{user.game_tag}").ToArray();
                 if (!_cache.SequenceEqual(names))
                 {
                     _cache = names;
